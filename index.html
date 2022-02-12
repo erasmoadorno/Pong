@@ -22,7 +22,9 @@
     #dvJogo{
         width: 960px;
         height: 500px;
-        border: 1px solid #f00;
+        border: 1px solid #fff;
+        border-left: 1px solid #f00;
+        border-right: 1px solid #05f;
         background-color: #000;
     }
     #dvBola{
@@ -93,15 +95,17 @@
     var Treload
 
     function animGame() {
-        movBola()
-        movCpu()
+        if (statusGame) {
+            movJog()
+            movBola()
+            movCpu()
+        }
         frames = requestAnimationFrame(animGame)
         
     }
 
     function movCpu() {
-        //Criar algoritmo que faça movimento quando a bola estiver na metade da direita, indo a direção bolaX=1, delimita a altura do movimento da barra da CPU e faça a barra se movimentar de acordo com a altura média da posBolaY + a largura da bola width
-
+    
         //Bola na tela direita
         if (statusGame) {
             
@@ -115,7 +119,7 @@
                         posCpuY-=velCpu                        
                     }
                 }
-                //posCpuY+=velCpu
+                
             }
             //Barra se movimenta ao meio quando a bola esta indo para a esquerda
             else{
@@ -126,7 +130,7 @@
                 }
             }
             vCpu.style.top=posCpuY+"px"
-            //console.log(bolaY) 
+            
         }
     }
 
@@ -177,16 +181,15 @@
         
         vBola.style.top = posBolaY+"px"
         vBola.style.left = posBolaX+"px"
-
     }
 
     function movJog() {
         if (statusGame) {
             posJogY+=velJog*dirJy   
             if (posJogY<0 || posJogY+barraH>=campoH) {
-                posJogY+= velJog*dirJy*(-1)
+                posJogY+= (velJog*dirJy)*(-1)
             }
-            vJogador.style.top = posJogY+"px"        
+            vJogador.style.top=posJogY+"px"        
         }
         
     }
@@ -221,9 +224,12 @@
             posBolaY = posBolaIniY
             posJogY = posJogIniY
             posCpuY = posCpuIniY
+            dirJy=0
             posJogX = 10
             posCpuX = 930
             velJog=velCpu=velBola=8
+            tecla = window.addEventListener("keydown",teclaDw)
+            tecla = window.addEventListener("keyup", teclaUp)
             bolaX = (Math.floor(Math.random()*6))
             if (bolaX<3) {
                 if (bolaX<=1) {
@@ -243,11 +249,6 @@
 
                 bolaX=1
             }
-            console.log(bolaY)
-            tecla = window.addEventListener("keydown",teclaDw)
-            tecla = window.addEventListener("keyup", teclaUp)
-            movBola()
-            movCpu()
             animGame()
 
         }
